@@ -1,9 +1,9 @@
-from fields.string_field import String, RegexField, PhoneField
+from fields.string_field import RegexField, PhoneField
 import pytest
 
 
 @pytest.mark.parametrize('value,expected,descriptor_field, additional_props', [
-("55555-999-33333", "55555-999-33333", PhoneField, {"strict":True}),
+("0899999999", "0899999999", PhoneField, {"strict":True}),
 ("", "12345", PhoneField, {"default_value": "12345"}),
 ])
 def test_phone_field_descriptor(value, expected, descriptor_field, additional_props):
