@@ -24,23 +24,24 @@ class Field(ABC):
         set_value = value
         try:
             self.validate(set_value)
-        except (ValueError, TypeError) as exc:
+        except (ValueError, TypeError,) as exc:
             logging.error(f'Validation of field "{self._combined_name}" failed for value: {value!r}. Cause: {exc} ')
             if self.required:
                 raise exc
         
             if self.default_value != None:
+                logging.warning(f'Using default value as fallback. Value: {self.default_value}')
                 set_value = self.default_value
         
         
         logging.debug(f'Setting "{obj.__class__.__name__}.{self._name}" to {set_value!r}')
-
         obj.__dict__[self._name] = set_value
 
     @abstractmethod
     def validate(self, value):
         pass
-        
+
+
 class TypedField(Field):
     _type = None
     def validate(self, value):

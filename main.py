@@ -1,18 +1,23 @@
-from traitlets.traitlets import default
 from resources.auto_manufacturers import MANUFACTURERS
 from fields.lookup_field import NestedField, OneOf, DictField
 from fields.string_field import IntegerField, PhoneField, StringField
 from fields.base_field import Field
 
 import inspect
-
-def _custom_init(self, *args, **kwargs):
+from functools import partial, partialmethod
+def _custom_init(self, error_container, *args, **kwargs):
 
     sig = self.__signature__.bind(*args,**kwargs)
     sig.apply_defaults()
-    for attr_name, attr in sig.arguments.items(): 
-        setattr(self, attr_name, attr)
-    
+    for attr_name, attr in sig.arguments.items():
+        try: 
+            setattr(self, attr_name, attr)
+        except (ValueError,TypeError,) as exc:
+            error_container.append(exc)            
+
+
+errors_container = []
+
 
 class InitMeta(type):
     def __new__(cls, bases, dicts, class_attrs):
@@ -26,42 +31,51 @@ class InitMeta(type):
                 init_params.append(param)
 
         setattr(class_obj, '__signature__', inspect.Signature(parameters=init_params))
-        setattr(class_obj, '__init__', _custom_init)
+
+        # partial()
+        setattr(class_obj, '__init__', partialmethod(_custom_init,error_container=errors_container))
+        setattr(class_obj, '_errors', errors_container)
         
         return class_obj
 
-class Bar(metaclass=InitMeta):
+
+class BaseModel(metaclass=InitMeta):
+    pass
+
+class Bar(BaseModel):
     long = IntegerField()
     lat = IntegerField()
 
 
-class Foo(metaclass=InitMeta):
+class Foo(BaseModel):
     username = StringField()
     address = StringField(default_value="F")
     location = NestedField(Bar)
 
-class CarAd(metaclass=InitMeta):
-    car_manufacturer = OneOf(lookup_values=MANUFACTURERS)
+class CarAd(BaseModel):
+    car_manufacturer = OneOf(lookup_values=MANUFACTURERS, required=True)
     contact_phone = PhoneField(required=True)
     car_fuel_type = OneOf(["Дизел", "Бензин", "Газ/Бензин",
                           "Метан/Бензин", "Хибрид"], case_sensitive=True)
     related = NestedField(Foo) 
 
-    def __init__(self, *args, **kwargs) -> None:
-        [setattr(self, name, val) for name, val in self.__signature__.bind(
-            *args, **kwargs).arguments.items()]
+    # def __init__(self, *args, **kwargs) -> None:
+    #     [setattr(self, name, val) for name, val in self.__signature__.bind(
+    #         *args, **kwargs).arguments.items()]
 
 
 if __name__ == '__main__':
 
     example_ad = {
-        "car_manufacturer": "Toyota",
-        "contact_phone": "0899999990",
-        "car_fuel_type": "бензин",
-        "related": {"username": 'foo', "location": { "long":3, "lat": 1}}
+        "car_manufacturer": "1Toyota",
+        "contact_phone": "08999999a90",
+        "car_fuel_type": "бензиaн",
+        "related": {"username": 'foo', "location":{"lat": 5, "baz": 1}}
     }
 
     ad = CarAd(**example_ad)
-
+    from pprint import pprint as pp
+    pp([x for x in ad._errors])
     import json
-    print(json.dumps(dict(ad.__dict__), default = lambda x: x.__dict__))
+    import ipdb;ipdb.set_trace()
+    # print(json.dumps(dict(ad.__dict__), default = lambda x: x.__dict__))
