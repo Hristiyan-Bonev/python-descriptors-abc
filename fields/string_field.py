@@ -1,3 +1,4 @@
+import collections
 import re
 
 from fields.base_field import TypedField
@@ -13,6 +14,10 @@ class IntegerField(TypedField):
 
 class BooleanField(TypedField):
     _type = int    
+
+
+class DictField(TypedField):
+    _type = collections.Mapping
 
 
 class RegexField(StringField):
@@ -32,11 +37,11 @@ class RegexField(StringField):
         except (TypeError, re.error):
             raise ValueError(f"{self._pattern!r} is not a valid pattern")
 
-
     def validate(self, value):
         super().validate(value)
         if not re.match(self._pattern, value, re.IGNORECASE):
             raise ValueError(f"Value {value!r} does not match regex pattern {self._pattern!r}")
+
 
 
 class PhoneField(RegexField):

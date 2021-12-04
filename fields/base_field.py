@@ -1,14 +1,18 @@
 from abc import ABC, abstractmethod
+import collections
 import os
 import logging
 
-DEBUG = os.environ.get('DEBUG', False)
+logging.basicConfig(level=logging.DEBUG)
+
+
 
 class Field(ABC):
 
     def __init__(self, *, required=False, default_value=None) -> None:
         self.required = required        
         self.default_value = default_value
+        self._debug = os.environ.get('DEBUG', False)
 
     def __set_name__(self, owner, name):
         self._name = name
@@ -18,7 +22,7 @@ class Field(ABC):
 
     def __set__(self, obj, value):
         set_value = self._validate(value)
-        if DEBUG:
+        if self._debug:
             logging.debug(f'Setting "{obj.__class__.__name__}.{self._name}" to {set_value!r}')
 
         obj.__dict__[self._name] = set_value
@@ -34,8 +38,7 @@ class Field(ABC):
         except ValueError as e:
             logging.info(f'Validation failed for {value!r}. Cause: {e} ')
             if self.default_value:
-                if DEBUG:
-                    logging.warning(f'Using fallback default value: {value}')
+                logging.warning(f'Using fallback default value: {value}')
                 return self.default_value
             else:
                 raise e
@@ -48,6 +51,4 @@ class TypedField(Field):
     def validate(self, value):
         if not isinstance(value, self._type):
             raise ValueError(
-                f"Cannot use {type(value)} as it's not of type {type(self._type)}")
-
-
+                f"Cannot use {type(value)} as it's not of type {self._type.__name__}")
