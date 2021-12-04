@@ -1,6 +1,5 @@
-from fields.base_field import Field
 from fields.lookup_field import OneOf
-from fields.string_field import RegexField, PhoneField
+from fields.string_field import PhoneField
 import pytest
 from contextlib import ExitStack as does_not_raise_exception
 
@@ -21,7 +20,7 @@ def test_phone_field(value, expected_value, additional_props, expectation):
 @pytest.mark.parametrize('value,exception', [
     ("", pytest.raises(ValueError, match="Value '' does not match regex pattern.*")),
     ("123", pytest.raises(ValueError, match="Value '123' does not match regex pattern.*")),
-    (5, pytest.raises(ValueError, match="Cannot use <class 'int'>.*"))
+    (5, pytest.raises(TypeError, match="Cannot use value of type int as type str"))
 ])
 def test_required_descriptor(value, exception):
     klass = type(

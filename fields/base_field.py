@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-import collections
 import os
 import logging
 

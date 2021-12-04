@@ -1,4 +1,4 @@
-import collections
+from collections.abc import Mapping
 import re
 
 from fields.base_field import TypedField
@@ -17,7 +17,7 @@ class BooleanField(TypedField):
 
 
 class DictField(TypedField):
-    _type = collections.Mapping
+    _type = Mapping
 
 
 class RegexField(StringField):
