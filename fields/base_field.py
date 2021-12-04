@@ -6,8 +6,8 @@ DEBUG = os.environ.get('DEBUG', False)
 
 class Field(ABC):
 
-    def __init__(self, *, strict=False, default_value=None) -> None:
-        self.strict = strict
+    def __init__(self, *, required=False, default_value=None) -> None:
+        self.required = required        
         self.default_value = default_value
 
     def __set_name__(self, owner, name):
@@ -33,26 +33,21 @@ class Field(ABC):
             return value
         except ValueError as e:
             logging.info(f'Validation failed for {value!r}. Cause: {e} ')
-            if self.strict:
-                raise e
-
             if self.default_value:
                 if DEBUG:
                     logging.warning(f'Using fallback default value: {value}')
                 return self.default_value
+            else:
+                raise e
 
         except Exception as exc:
             logging.exception(f"Got unexpected exception while setting {value}.")
 
 class TypedField(Field):
-
     _type = None
-
     def validate(self, value):
         if not isinstance(value, self._type):
             raise ValueError(
                 f"Cannot use {type(value)} as it's not of type {type(self._type)}")
 
 
-class StringField(TypedField):
-    _type = str    
