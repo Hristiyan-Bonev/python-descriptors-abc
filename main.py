@@ -1,7 +1,7 @@
 from traitlets.traitlets import default
 from resources.auto_manufacturers import MANUFACTURERS
 from fields.lookup_field import NestedField, OneOf, DictField
-from fields.string_field import PhoneField, StringField
+from fields.string_field import IntegerField, PhoneField, StringField
 from fields.base_field import Field
 
 import inspect
@@ -31,13 +31,14 @@ class InitMeta(type):
         return class_obj
 
 class Bar(metaclass=InitMeta):
-    barprop = StringField(default_value="NOT SET")
+    long = IntegerField()
+    lat = IntegerField()
 
 
 class Foo(metaclass=InitMeta):
     username = StringField()
     address = StringField(default_value="F")
-    barprop = NestedField(Bar)
+    location = NestedField(Bar)
 
 class CarAd(metaclass=InitMeta):
     car_manufacturer = OneOf(lookup_values=MANUFACTURERS)
@@ -57,7 +58,7 @@ if __name__ == '__main__':
         "car_manufacturer": "Toyota",
         "contact_phone": "0899999990",
         "car_fuel_type": "бензин",
-        "related": {"username": 'foo', "barprop":1}
+        "related": {"username": 'foo', "location": { "long":3, "lat": 1}}
     }
 
     ad = CarAd(**example_ad)
