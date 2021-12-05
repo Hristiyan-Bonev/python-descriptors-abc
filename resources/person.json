@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Иван",
+        "contact_phone": "",
+        "gender": "male",
+        "address": {
+            "city": "sofia",
+            "country_abbrev": "ABBR"
+        },
+        "age": 20
+    },
+    {
+        "name": "Петър",
+        "contact_phone": "+312359899999999",
+        "gender": "male",
+        "address": {
+            "city": "Sofia",
+            "country_abbrev": "BG"
+        },
+        "age": 1
+    },
+    {
+        "name": "foo",
+        "contact_phone": "0899999999",
+        "gender": "male",
+        "address": {
+            "city": "Sofia",
+            "country_abbrev": "BG"
+        },
+        "age": 1
+    },
+    {
+        "name": "foo",
+        "contact_phone": "+359899999999",
+        "gender": "male",
+        "address": {
+            "city": "Sofia",
+            "country_abbrev": "BG"
+        },
+        "age": 1
+    },
+    {
+        "name": "foo",
+        "contact_phone": "+359899999999",
+        "gender": "male",
+        "address": {
+            "city": "Sofia",
+            "country_abbrev": "BG"
+        },
+        "age": 1
+    },
+    {
+        "name": "foo",
+        "contact_phone": "+359899999999",
+        "gender": "male",
+        "address": {
+            "city": "Sofia",
+            "country_abbrev": "BGA"
+        },
+        "age": 1
+    }
+]

@@ -10,7 +10,7 @@ class OneOf(Field):
 
     def validate(self, value):
         if value not in self.lookup_values:
-            raise ValueError(f"Value {value} is not one of") #{self.lookup_values}")
+            raise ValueError(f"Value {value} is not one of {self.lookup_values}")
 
 
 class ModelField(Field):
@@ -20,11 +20,7 @@ class ModelField(Field):
         self.obj_initializer = obj_initializer
 
     def validate(self, values):
-        try:
-            self.obj_initializer(**values)
-        except Exception as e:
-            # print(e)            
-            raise e
+        self.obj_initializer(**values)
 
     def _set_value(self,obj,value):
         obj.__dict__[self._name] = self.obj_initializer(**value)

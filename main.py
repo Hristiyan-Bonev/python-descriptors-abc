@@ -1,28 +1,30 @@
 import json
-from models.car_model import CarAd
+from models.car_model import Person
 
 from pprint import pprint as pp
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 if __name__ == '__main__':
 
-    example_ads = [
-        # {
-        #     "car_manufacturer": "AyToyota",
-        #     "contact_phone": "089999a9990",
-        #     "car_fuel_type": "бенз3ин",
-        #     "related": {"username": 2, "location": {"lat": 5, "long": 4}},
-        #     "related_tags": {"tag_type": "broken", "tag_value": 1}
-        # }, 
-        {
-            # "car_manufacturer": "AyToyota",
-            "contact_phone": "089999a9990",
-            "car_fuel_type": "бенз3ин",
-            "related": {"username": "Goo", "location": {"lat": 0, "long": -121}},
-            "related_tags": {"tag_type": "foooo", "tag_value": 1}
-        }
-    ]
+    data = json.load(open('resources/person.json'))
 
-    for ad in example_ads:
-        foo = CarAd(**ad)
-        pp(json.loads(json.dumps(foo.__dict__, default=lambda x: x.__dict__)))
+    out = []
+
+    for d in data:
+        out.append(Person(**d))
+
+    
+    outt = json.loads(json.dumps(out, default = lambda x: x.__dict__))
+    
+    # import  csv
+    # with open('dict.csv', 'w') as csv_file:  
+    #     writer = csv.DictWriter(csv_file, fieldnames=outt[0].keys())
+    #     writer.writeheader()
+    #     for item in outt:
+    #         writer.writerow(item)
+    with open('out.json', 'w') as out_file:
+
+        out_file.write(json.dumps(outt, indent=4, sort_keys=True))

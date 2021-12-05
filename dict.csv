@@ -1,0 +1,7 @@
+errors_list,name,contact_phone,gender,address,age
+"[{'field_name': 'person.contact_phone', 'validator_name': 'RegexField.validate', 'error_type': 'ValueError', 'error_message': ""Value '' does not match regex pattern '^(\\\\+359|0)8[789]\\\\d{7}$'"", 'value': ''}]",Иван,,male,"{'errors_list': [{'field_name': 'address.country_abbrev', 'validator_name': 'RegexField.validate', 'error_type': 'ValueError', 'error_message': ""Value 'ABBR' does not match regex pattern '^[A-Z]{2}$'"", 'value': 'ABBR'}], 'city': 'sofia', 'country_abbrev': 'ABBR'}",20
+[],Петър,+359899999999,male,"{'errors_list': [], 'city': 'Sofia', 'country_abbrev': 'BG'}",1
+[],foo,0899999999,male,"{'errors_list': [], 'city': 'Sofia', 'country_abbrev': 'BG'}",1
+[],foo,+359899999999,male,"{'errors_list': [], 'city': 'Sofia', 'country_abbrev': 'BG'}",1
+[],foo,+359899999999,male,"{'errors_list': [], 'city': 'Sofia', 'country_abbrev': 'BG'}",1
+[],foo,+359899999999,male,"{'errors_list': [{'field_name': 'address.country_abbrev', 'validator_name': 'RegexField.validate', 'error_type': 'ValueError', 'error_message': ""Value 'BGA' does not match regex pattern '^[A-Z]{2}$'"", 'value': 'BGA'}], 'city': 'Sofia', 'country_abbrev': 'BGA'}",1

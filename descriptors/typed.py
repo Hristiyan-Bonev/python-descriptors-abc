@@ -5,8 +5,8 @@ from collections import Mapping, Iterable
 class TypedDescriptor(Field):
     _type = None
 
-    def __init__(self, *, required=False, default_value=None, external_validators=None) -> None:
-        super().__init__(required=required, default_value=default_value, external_validators=external_validators)
+    def __init__(self, **kwargs) -> None:
+        super().__init__(**kwargs)
 
     def validate(self, value):
         if not isinstance(value, self._type):
@@ -24,9 +24,4 @@ class BooleanField(TypedDescriptor):
     _type = int
 
 
-class DictField(TypedDescriptor):
-    _type = Mapping
 
-
-class IterableField(TypedDescriptor):
-    _type = Iterable

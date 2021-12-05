@@ -1,0 +1,120 @@
+[
+    {
+        "address": {
+            "city": "sofia",
+            "country_abbrev": "ABBR",
+            "errors_list": [
+                {
+                    "error_message": "Value 'ABBR' does not match regex pattern '^[A-Z]{2}$'",
+                    "error_type": "ValueError",
+                    "field_name": "address.country_abbrev",
+                    "validator_name": "RegexField.validate",
+                    "value": "ABBR"
+                },
+                {
+                    "error_message": "Value ABBR not in ['FO', 'BG']",
+                    "error_type": "ValueError",
+                    "field_name": "address.country_abbrev",
+                    "validator_name": "foo",
+                    "value": "ABBR"
+                }
+            ]
+        },
+        "age": 20,
+        "contact_phone": "",
+        "errors_list": [
+            {
+                "error_message": "Value '' does not match regex pattern '^(\\\\+359|0)8[789]\\\\d{7}$'",
+                "error_type": "ValueError",
+                "field_name": "person.contact_phone",
+                "validator_name": "RegexField.validate",
+                "value": ""
+            }
+        ],
+        "gender": "male",
+        "name": "\u0418\u0432\u0430\u043d"
+    },
+    {
+        "address": {
+            "city": "Sofia",
+            "country_abbrev": "BG",
+            "errors_list": []
+        },
+        "age": 1,
+        "contact_phone": "+312359899999999",
+        "errors_list": [
+            {
+                "error_message": "Value '+312359899999999' does not match regex pattern '^(\\\\+359|0)8[789]\\\\d{7}$'",
+                "error_type": "ValueError",
+                "field_name": "person.contact_phone",
+                "validator_name": "RegexField.validate",
+                "value": "+312359899999999"
+            }
+        ],
+        "gender": "male",
+        "name": "\u041f\u0435\u0442\u044a\u0440"
+    },
+    {
+        "address": {
+            "city": "Sofia",
+            "country_abbrev": "BG",
+            "errors_list": []
+        },
+        "age": 1,
+        "contact_phone": "0899999999",
+        "errors_list": [],
+        "gender": "male",
+        "name": "foo"
+    },
+    {
+        "address": {
+            "city": "Sofia",
+            "country_abbrev": "BG",
+            "errors_list": []
+        },
+        "age": 1,
+        "contact_phone": "+359899999999",
+        "errors_list": [],
+        "gender": "male",
+        "name": "foo"
+    },
+    {
+        "address": {
+            "city": "Sofia",
+            "country_abbrev": "BG",
+            "errors_list": []
+        },
+        "age": 1,
+        "contact_phone": "+359899999999",
+        "errors_list": [],
+        "gender": "male",
+        "name": "foo"
+    },
+    {
+        "address": {
+            "city": "Sofia",
+            "country_abbrev": "BGA",
+            "errors_list": [
+                {
+                    "error_message": "Value 'BGA' does not match regex pattern '^[A-Z]{2}$'",
+                    "error_type": "ValueError",
+                    "field_name": "address.country_abbrev",
+                    "validator_name": "RegexField.validate",
+                    "value": "BGA"
+                },
+                {
+                    "error_message": "Value BGA not in ['FO', 'BG']",
+                    "error_type": "ValueError",
+                    "field_name": "address.country_abbrev",
+                    "validator_name": "foo",
+                    "value": "BGA"
+                }
+            ]
+        },
+        "age": 1,
+        "contact_phone": "+359899999999",
+        "errors_list": [],
+        "gender": "male",
+        "name": "foo"
+    }
+]

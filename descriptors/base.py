@@ -1,8 +1,5 @@
 from abc import ABC, abstractmethod
-import os
 import logging
-
-logging.basicConfig(level=logging.ERROR)
 
 
 class Field(ABC):
@@ -17,7 +14,6 @@ class Field(ABC):
             external_validators = []
         self.validators = []
         self.validators = self._external_validators + external_validators
-        print(self._external_validators)
 
         assert(callable(x)
                for x in self._external_validators), "Only callables should be passed as validators"
@@ -50,7 +46,7 @@ class Field(ABC):
             function(value)
         except (ValueError, TypeError,) as exc:
             logging.error(
-                f'Function "{function.__name__}" failed for field "{self._combined_name}" and value: {value!r}. Cause: {exc} ')
+                f'Function "{function.__qualname__}" failed for field "{self._combined_name}" and value: {value!r}. Cause: {exc} ')
 
             if self.default_value != None:
                 logging.warning(

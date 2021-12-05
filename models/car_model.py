@@ -1,37 +1,25 @@
 from models.base import BaseModel
 
 from descriptors.typed import IntegerField, StringField
-from descriptors.regex import PhoneField
+from descriptors.regex import PhoneField, RegexField
+
 from descriptors.lookup_field import ModelField, OneOf
-from models.external_validators import IntegerHelpers
-from resources.auto_manufacturers import MANUFACTURERS
 
+from models.external_validators import IntegerHelpers, StringHelpers
+from functools import partial, update_wrapper
 
-def is_even(value):
-    if value % 2 == 0:
-        raise ValueError("Must be positive")
+class Address(BaseModel):
 
+    x = partial(StringHelpers.is_in, values=['FO', "BG"])
+    x.__qualname__='foo'
 
-class Location(BaseModel):
-    long = IntegerField(external_validators=[IntegerHelpers.is_even, IntegerHelpers.is_positive])
-    lat = IntegerField()
-
-
-class Tag(BaseModel):
-    tag_type = OneOf(["broken", "new"])
-    tag_value = IntegerField()
+    city = StringField()
+    country_abbrev = RegexField("^[A-Z]{2}$", external_validators=[x])
 
 
 class Person(BaseModel):
-    username = StringField()
-    address = StringField(default_value="F")
-    location = ModelField(Location)
-
-
-class CarAd(BaseModel):
-    car_manufacturer = OneOf(lookup_values=MANUFACTURERS, required=True)
+    name = StringField(required=True)
     contact_phone = PhoneField(required=True)
-    car_fuel_type = OneOf(["Дизел", "Бензин", "Газ/Бензин",
-                          "Метан/Бензин", "Хибрид"], case_sensitive=False)
-    related = ModelField(Person)
-    related_tags = ModelField(Tag)
+    gender = OneOf(["male", "female", "other"], case_sensitive=False)
+    address = ModelField(Address)
+    age = IntegerField(external_validators=[IntegerHelpers.is_positive])

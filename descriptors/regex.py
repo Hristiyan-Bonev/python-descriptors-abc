@@ -21,7 +21,6 @@ class RegexField(Field):
             raise ValueError(f"{self._pattern!r} is not a valid pattern")
 
     def validate(self, value):
-        super().validate(value)
         if not re.match(self._pattern, value, re.IGNORECASE):
             raise ValueError(f"Value {value!r} does not match regex pattern {self._pattern!r}")
 

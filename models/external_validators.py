@@ -17,3 +17,11 @@ class IntegerHelpers:
     def is_positive(value):
         if value <= 0:
             raise ValueError(f"Value {value} should be positive")
+
+
+class StringHelpers:
+
+    @staticmethod
+    def is_in(value, values):
+        if value not in values:
+            raise ValueError(f"Value {value} not in {values!r}")
