@@ -1,20 +1,16 @@
-from functools import partial
+from functools import partial, update_wrapper
 
 from descriptors.typed import IntegerField, StringField
 from descriptors.regex import PhoneField, RegexField
 from descriptors.lookup_field import ModelField, OneOf
 
 from models.base import BaseModel
-from models.external_validators import IntegerHelpers, StringHelpers
+from models.external_validators import IntegerHelpers, StringHelpers, func_with_args
 
 
 class Address(BaseModel):
-
-    x = partial(StringHelpers.is_in, values=['FO', "BG"])
-    x.__qualname__ = 'foo'
-
     city = StringField()
-    country_abbrev = RegexField("^[A-Z]{2}$", external_validators=[x])
+    country_abbrev = RegexField("^[A-Z]{2}$", external_validators=[func_with_args(StringHelpers.is_in, values=["BG", "DE"])])
 
 
 class Person(BaseModel):

@@ -1,3 +1,6 @@
+from functools import partial, update_wrapper
+
+
 class IntegerHelpers:
 
     @staticmethod
@@ -20,4 +23,7 @@ class StringHelpers:
     @staticmethod
     def is_in(value, values):
         if value not in values:
-            raise ValueError(f"Value {value} not in {values!r}")
+            raise ValueError(f"Value {value} not in {values!r}")    
+
+def func_with_args(func, *args, **kwargs):
+    return update_wrapper(partial(func, *args, **kwargs), func)

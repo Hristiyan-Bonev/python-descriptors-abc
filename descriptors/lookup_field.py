@@ -20,9 +20,11 @@ class ModelField(Field):
     def __init__(self, obj_initializer, **kwargs) -> None:
         super().__init__(**kwargs)
         self.obj_initializer = obj_initializer
+        self.temp_obj = None
 
     def validate(self, values):
         self.temp_obj = self.obj_initializer(**values)
 
     def _set_value(self, obj, value):
         obj.__dict__[self._name] = self.temp_obj
+        self.temp_obj = None

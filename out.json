@@ -2,21 +2,14 @@
     {
         "address": {
             "city": "sofia",
-            "country_abbrev": "ABBR",
+            "country_abbrev": "AR",
             "errors_list": [
                 {
-                    "error_message": "Value 'ABBR' does not match regex pattern '^[A-Z]{2}$'",
+                    "error_message": "Value AR not in ['BG', 'DE']",
                     "error_type": "ValueError",
                     "field_name": "address.country_abbrev",
-                    "validator_name": "RegexField.validate",
-                    "value": "ABBR"
-                },
-                {
-                    "error_message": "Value ABBR not in ['FO', 'BG']",
-                    "error_type": "ValueError",
-                    "field_name": "address.country_abbrev",
-                    "validator_name": "foo",
-                    "value": "ABBR"
+                    "validator_name": "StringHelpers.is_in",
+                    "value": "AR"
                 }
             ]
         },
@@ -47,10 +40,10 @@
                     "value": "BAG"
                 },
                 {
-                    "error_message": "Value BAG not in ['FO', 'BG']",
+                    "error_message": "Value BAG not in ['BG', 'DE']",
                     "error_type": "ValueError",
                     "field_name": "address.country_abbrev",
-                    "validator_name": "foo",
+                    "validator_name": "StringHelpers.is_in",
                     "value": "BAG"
                 }
             ]
@@ -118,10 +111,10 @@
                     "value": "BGA"
                 },
                 {
-                    "error_message": "Value BGA not in ['FO', 'BG']",
+                    "error_message": "Value BGA not in ['BG', 'DE']",
                     "error_type": "ValueError",
                     "field_name": "address.country_abbrev",
-                    "validator_name": "foo",
+                    "validator_name": "StringHelpers.is_in",
                     "value": "BGA"
                 }
             ]

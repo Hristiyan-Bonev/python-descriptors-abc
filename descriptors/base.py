@@ -14,12 +14,15 @@ class Field(ABC):
         self.validators = []
         self.validators = self._external_validators + external_validators
 
+        self._temp_error = False
+
         assert(callable(x)
                for x in self._external_validators), "Only callables should be passed as validators"
 
     def __set_name__(self, owner, name):
         self._name = name
-        self._combined_name = f"{owner.__name__}.{name}".lower()
+        self._owner_name = owner.__name__ or ""
+        self._combined_name = f"{self._owner_name}.{name}".lower()
 
     def __get__(self, obj, objtype=None):
         return obj.__dict__.get(self._name)
@@ -34,6 +37,7 @@ class Field(ABC):
             self.apply_validation(x, obj, value)
 
         self._set_value(obj, value)
+        self._temp_error = False
 
     def apply_validation(self, function, obj, value):
         """
@@ -44,15 +48,10 @@ class Field(ABC):
         try:
             function(value)
         except (ValueError, TypeError,) as exc:
+            self._temp_error = True
             logging.error(
                 f'Function "{function.__qualname__}" failed for field "{self._combined_name}" and value: {value!r}. Cause: {exc} ')
-
-            if self.default_value != None:
-                logging.warning(
-                    f'Using default value as fallback. Value: {self.default_value}')
-                value = self.default_value
-
-            if getattr(obj, 'errors_list') != None:
+            if getattr(obj, 'errors_list', None) != None:
                 obj.errors_list.append(
                     {
                         "field_name": self._combined_name,
@@ -63,6 +62,12 @@ class Field(ABC):
                     })
 
     def _set_value(self, obj, value):
+
+        if self.default_value != None and self._temp_error:
+            logging.warning(
+                f'Using default value as fallback. Value: {self.default_value}')
+            value = self.default_value
+
         logging.debug(f'Setting "{self._combined_name}" to {value!r}')
         obj.__dict__[self._name] = value
 
