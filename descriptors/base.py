@@ -2,11 +2,10 @@ from abc import ABC, abstractmethod
 import os
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 
 
 class Field(ABC):
-
     def __init__(self, *, required=False, default_value=None) -> None:
         self.required = required
         self.default_value = default_value
@@ -23,12 +22,8 @@ class Field(ABC):
         try:
             self.validate(value)
         except (ValueError, TypeError,) as exc:
-            if hasattr(obj, 'errors_list'):
-                obj.errors_list.append(exc)
             logging.error(
                 f'Validation of field "{self._combined_name}" failed for value: {value!r}. Cause: {exc} ')
-            # if self.required:
-            #     raise exc
 
             if self.default_value != None:
                 logging.warning(
@@ -36,10 +31,22 @@ class Field(ABC):
                 
                 value = self.default_value
 
+            if getattr(obj, 'errors_list', None) != None:
+                obj.errors_list.append({"error_type": type(exc).__name__, "error_message": " ".join(exc.args)})
+        
+
         logging.debug(
-            f'Setting "{obj.__class__.__name__}.{self._name}" to {value!r}')
+        f'Setting "{obj.__class__.__name__}.{self._name}" to {value!r}')
+
+        self._set_value(obj, value)
+        
+    
+
+    def _set_value(self,obj,value):
         obj.__dict__[self._name] = value
 
     @abstractmethod
     def validate(self, value):
         pass
+
+

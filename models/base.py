@@ -24,9 +24,7 @@ class InitMeta(type):
 
 class BaseModel(metaclass=InitMeta):
     def __init__(self, error_container=None, *args, **kwargs):
-
         self.errors_list = error_container or []
-
         sig = self.__signature__.bind(*args, **kwargs)
         sig.apply_defaults()
         for attr_name, attr in sig.arguments.items():

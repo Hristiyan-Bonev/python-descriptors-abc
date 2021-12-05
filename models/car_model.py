@@ -1,14 +1,14 @@
 from models.base import BaseModel
 
-from descriptors.typed import IntegerField, StringField
+from descriptors.typed import IntegerField, StringField, ValidatorFunction
 from descriptors.regex import PhoneField
 from descriptors.lookup_field import ModelField, OneOf
 
 from resources.auto_manufacturers import MANUFACTURERS
 
 
-class Bar(BaseModel):
-    long = IntegerField()
+class Location(BaseModel):
+    long = IntegerField(additional_validators=[ValidatorFunction(lambda x: x>0, "The number must be > 0"), lambda x: x])
     lat = IntegerField()
 
 
@@ -17,10 +17,10 @@ class Tag(BaseModel):
     tag_value = IntegerField()
 
 
-class Foo(BaseModel):
+class Person(BaseModel):
     username = StringField()
     address = StringField(default_value="F")
-    location = ModelField(Bar)
+    location = ModelField(Location)
 
 
 class CarAd(BaseModel):
@@ -28,5 +28,5 @@ class CarAd(BaseModel):
     contact_phone = PhoneField(required=True)
     car_fuel_type = OneOf(["Дизел", "Бензин", "Газ/Бензин",
                           "Метан/Бензин", "Хибрид"], case_sensitive=False)
-    related = ModelField(Foo)
+    related = ModelField(Person)
     related_tags = ModelField(Tag)
