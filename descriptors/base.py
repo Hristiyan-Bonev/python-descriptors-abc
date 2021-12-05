@@ -7,7 +7,6 @@ class Field(ABC):
     _external_validators = []
 
     def __init__(self, *, required=False, default_value=None, external_validators=None) -> None:
-        self.required = required
         self.default_value = default_value
 
         if not external_validators:

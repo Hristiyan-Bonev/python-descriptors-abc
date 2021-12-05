@@ -1,6 +1,3 @@
-from os import stat
-
-
 class IntegerHelpers:
 
     @staticmethod
@@ -20,7 +17,6 @@ class IntegerHelpers:
 
 
 class StringHelpers:
-
     @staticmethod
     def is_in(value, values):
         if value not in values:

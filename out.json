@@ -37,8 +37,23 @@
     {
         "address": {
             "city": "Sofia",
-            "country_abbrev": "BG",
-            "errors_list": []
+            "country_abbrev": "BAG",
+            "errors_list": [
+                {
+                    "error_message": "Value 'BAG' does not match regex pattern '^[A-Z]{2}$'",
+                    "error_type": "ValueError",
+                    "field_name": "address.country_abbrev",
+                    "validator_name": "RegexField.validate",
+                    "value": "BAG"
+                },
+                {
+                    "error_message": "Value BAG not in ['FO', 'BG']",
+                    "error_type": "ValueError",
+                    "field_name": "address.country_abbrev",
+                    "validator_name": "foo",
+                    "value": "BAG"
+                }
+            ]
         },
         "age": 1,
         "contact_phone": "+312359899999999",

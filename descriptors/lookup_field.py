@@ -1,5 +1,6 @@
 from descriptors.base import Field
 
+
 class OneOf(Field):
 
     def __init__(self, lookup_values, case_sensitive=False, **kwargs) -> None:
@@ -10,7 +11,8 @@ class OneOf(Field):
 
     def validate(self, value):
         if value not in self.lookup_values:
-            raise ValueError(f"Value {value} is not one of {self.lookup_values}")
+            raise ValueError(
+                f"Value {value} is not one of {self.lookup_values}")
 
 
 class ModelField(Field):
@@ -20,7 +22,7 @@ class ModelField(Field):
         self.obj_initializer = obj_initializer
 
     def validate(self, values):
-        self.obj_initializer(**values)
+        self.temp_obj = self.obj_initializer(**values)
 
-    def _set_value(self,obj,value):
-        obj.__dict__[self._name] = self.obj_initializer(**value)
+    def _set_value(self, obj, value):
+        obj.__dict__[self._name] = self.temp_obj
