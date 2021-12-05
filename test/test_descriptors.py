@@ -1,5 +1,5 @@
-from fields.lookup_field import OneOf
-from fields.string_field import PhoneField
+from descriptors.lookup_field import OneOf
+from descriptors.regex import PhoneField
 import pytest
 from contextlib import ExitStack as does_not_raise_exception
 

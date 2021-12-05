@@ -4,8 +4,6 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-
-
 class Field(ABC):
 
     def __init__(self, *, required=False, default_value=None) -> None:
@@ -26,6 +24,7 @@ class Field(ABC):
             self.validate(set_value)
         except (ValueError, TypeError,) as exc:
             logging.error(f'Validation of field "{self._combined_name}" failed for value: {value!r}. Cause: {exc} ')
+            import ipdb;ipdb.set_trace()
             if self.required:
                 raise exc
         
@@ -37,15 +36,7 @@ class Field(ABC):
         logging.debug(f'Setting "{obj.__class__.__name__}.{self._name}" to {set_value!r}')
         obj.__dict__[self._name] = set_value
 
+
     @abstractmethod
     def validate(self, value):
         pass
-
-
-class TypedField(Field):
-    _type = None
-    def validate(self, value):
-        if not isinstance(value, self._type):
-            raise TypeError(
-                f"Cannot use value of type {type(value).__name__} as type {self._type}")
-        return value

@@ -1,30 +1,9 @@
-from collections.abc import Mapping, Iterable
 import re
-from typing import List
 
-from fields.base_field import TypedField
-
-
-class StringField(TypedField):
-    _type = str    
+from descriptors.base import Field
 
 
-class IntegerField(TypedField):
-    _type = int    
-
-
-class BooleanField(TypedField):
-    _type = int    
-
-
-class DictField(TypedField):
-    _type = Mapping
-
-class IterableField(TypedField):
-    _type = List
-
-
-class RegexField(StringField):
+class RegexField(Field):
     regexp_pattern = None
 
     def __init__(self, pattern=None, **kwargs) -> None:
