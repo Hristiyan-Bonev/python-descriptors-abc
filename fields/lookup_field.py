@@ -1,5 +1,5 @@
 from fields.base_field import Field
-from fields.string_field import DictField, StringField
+from fields.string_field import DictField, StringField, IterableField
 
 class OneOf(StringField):
 
@@ -20,12 +20,28 @@ class NestedField(DictField):
         super().__init__(required=required, default_value=default_value)
         self.obj_initializer = obj_initializer
 
-    def __set__(self, obj, value):
+    def validate(self, obj, value):
 
         init_values = value or self.default_value or {}
 
         # Create instance with the provided values
-        inst =  self.obj_initializer(**init_values)
 
-        # Provide created instance dictionary to be set through parent set method
-        return super().__set__(obj, inst.__dict__)
+        obj = self.obj_initializer(**init_values).__dict__
+        import ipdb;ipdb.set_trace()
+
+        super().validate(obj, obj.__dict__)
+
+
+        # # Provide created instance dictionary to be set through parent set method
+        # return super().__set__(obj, inst.__dict__)
+
+class ObjectContainer(NestedField):
+    def __set__(self, obj, value):
+        import ipdb;ipdb.set_trace()
+        super(IterableField, self).validate(value)
+        ee = []
+        for val in value:
+            ee.append(super().validate(obj, val))
+        super().__set__(obj, value)
+
+    def vali

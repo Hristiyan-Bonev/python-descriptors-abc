@@ -47,5 +47,5 @@ class TypedField(Field):
     def validate(self, value):
         if not isinstance(value, self._type):
             raise TypeError(
-                f"Cannot use value of type {type(value).__name__} as type {self._type.__name__}")
+                f"Cannot use value of type {type(value).__name__} as type {self._type}")
         return value

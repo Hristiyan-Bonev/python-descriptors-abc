@@ -1,5 +1,6 @@
 from collections.abc import Mapping, Iterable
 import re
+from typing import List
 
 from fields.base_field import TypedField
 
@@ -20,7 +21,7 @@ class DictField(TypedField):
     _type = Mapping
 
 class IterableField(TypedField):
-    _type = Iterable
+    _type = List
 
 
 class RegexField(StringField):
