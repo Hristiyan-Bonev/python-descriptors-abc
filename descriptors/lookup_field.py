@@ -23,9 +23,8 @@ class ModelField(Field):
         try:
             self.obj_initializer(**values)
         except Exception as e:
-            print(e)
-            return
-            raise IndentationError
+            # print(e)            
+            raise e
 
     def _set_value(self,obj,value):
         obj.__dict__[self._name] = self.obj_initializer(**value)

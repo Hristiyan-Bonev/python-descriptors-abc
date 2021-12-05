@@ -1,14 +1,19 @@
 from models.base import BaseModel
 
-from descriptors.typed import IntegerField, StringField, ValidatorFunction
+from descriptors.typed import IntegerField, StringField
 from descriptors.regex import PhoneField
 from descriptors.lookup_field import ModelField, OneOf
-
+from models.external_validators import IntegerHelpers
 from resources.auto_manufacturers import MANUFACTURERS
 
 
+def is_even(value):
+    if value % 2 == 0:
+        raise ValueError("Must be positive")
+
+
 class Location(BaseModel):
-    long = IntegerField(additional_validators=[ValidatorFunction(lambda x: x>0, "The number must be > 0"), lambda x: x])
+    long = IntegerField(external_validators=[IntegerHelpers.is_even, IntegerHelpers.is_positive])
     lat = IntegerField()
 
 
