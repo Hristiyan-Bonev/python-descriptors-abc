@@ -1,18 +1,27 @@
+import json
 from models.car_model import CarAd
+
+from pprint import pprint as pp
+
 
 if __name__ == '__main__':
 
-    example_ad = {
-        "car_manufacturer": "Toyota",
-        "contact_phone": "0899999990",
-        "car_fuel_type": "бензин",
-        "related": {"username": 2, "location":{"lat": 5, "long": 3}},
-        "related_tags": {"tag_type": "broken", "tag_value":1}
-    }
+    example_ads = [
+        {
+            "car_manufacturer": "AyToyota",
+            "contact_phone": "089999a9990",
+            "car_fuel_type": "бенз3ин",
+            "related": {"username": 2, "location": {"lat": 5, "long": 3}},
+            "related_tags": {"tag_type": "broken", "tag_value": 1}
+        }, {
+            "car_manufacturer": "AyToyota",
+            "contact_phone": "089999a9990",
+            "car_fuel_type": "бенз3ин",
+            "related": {"username": 2, "location": {"lat": 5, "long": 3}},
+            "related_tags": {"tag_type": "foooo", "tag_value": 1}
+        }
+    ]
 
-    ad = CarAd(**example_ad)
-    from pprint import pprint as pp
-    pp([x for x in ad._errors])
-    import json
-    # import ipdb;ipdb.set_trace()
-    print(json.dumps(dict(ad.__dict__), default = lambda x: x.__dict__))
+    for ad in example_ads:
+        foo = CarAd(**ad)
+        pp(dict(foo.__dict__))

@@ -4,19 +4,6 @@ from functools import partialmethod
 from descriptors.base import Field
 
 
-def _custom_init(self, error_container, *args, **kwargs):
-
-    sig = self.__signature__.bind(*args, **kwargs)
-    sig.apply_defaults()
-    for attr_name, attr in sig.arguments.items():
-        try:
-            setattr(self, attr_name, attr)
-        except (ValueError, TypeError,) as exc:
-            error_container.append(exc)
-
-
-errors_container = []
-
 
 class InitMeta(type):
     def __new__(cls, bases, dicts, class_attrs):
@@ -32,12 +19,18 @@ class InitMeta(type):
         setattr(class_obj, '__signature__',
                 inspect.Signature(parameters=init_params))
 
-        setattr(class_obj, '__init__', partialmethod(
-            _custom_init, error_container=errors_container))
-        setattr(class_obj, '_errors', errors_container)
-
         return class_obj
 
 
 class BaseModel(metaclass=InitMeta):
-    pass
+    def __init__(self, error_container=None, *args, **kwargs):
+
+        self.errors_list = error_container or []
+
+        sig = self.__signature__.bind(*args, **kwargs)
+        sig.apply_defaults()
+        for attr_name, attr in sig.arguments.items():
+            try:
+                setattr(self, attr_name, attr)
+            except (ValueError, TypeError,) as exc:
+                self.errors_list.append(exc)

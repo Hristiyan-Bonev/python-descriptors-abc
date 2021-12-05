@@ -3,7 +3,7 @@ from typing import Type
 from descriptors.base import Field
 from descriptors.typed import DictField, StringField, IterableField
 
-class OneOf(StringField):
+class OneOf(Field):
 
     def __init__(self, lookup_values, case_sensitive=False, **kwargs) -> None:
         super().__init__(**kwargs)
@@ -22,14 +22,5 @@ class ModelField(Field):
         super().__init__(**kwargs)
         self.obj_initializer = obj_initializer
 
-    def validate(self, value):
-        obj = self.obj_initializer(**init_values)   
-
-class ObjectContainer(ModelField):
-    def __set__(self, obj, value):
-        import ipdb;ipdb.set_trace()
-        super(IterableField, self).validate(value)
-        ee = []
-        for val in value:
-            ee.append(super().validate(obj, val))
-        super().__set__(obj, value)
+    def validate(self, values):
+        self.obj_initializer(**values)   

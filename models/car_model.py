@@ -18,7 +18,7 @@ class Tag(BaseModel):
 
 
 class Foo(BaseModel):
-    username = StringField(required=True)
+    username = StringField()
     address = StringField(default_value="F")
     location = ModelField(Bar)
 
